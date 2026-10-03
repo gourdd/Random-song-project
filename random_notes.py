@@ -3,12 +3,12 @@ import random
 
 # Methods that deal with random note generation
 
-def random_note(root_midi, doubled=False, highest_length=4.0, minor=False):
+def random_note(root_midi, doubled=False, max_length=4.0, minor=False):
 
     the_pitch = random_pitch(root_midi, doubled, minor)
     the_note = note.Note(midi=the_pitch)
 
-    the_note.duration.quarterLength = random_length(highest_length)
+    the_note.duration.quarterLength = random_length(max_length)
 
     return the_note
 
@@ -19,20 +19,22 @@ def random_pitch(root_midi, doubled=False, minor=False):
     
     return the_pitch
 
-def random_length(highest_length):
+def random_length(max_length):
 
     length_ranges = [0.25, 0.5, 1.0, 2.0, 4.0] 
 
-    if highest_length in length_ranges:
-        length_index = length_ranges.index(highest_length)
+    if max_length in length_ranges:
+        length_index = length_ranges.index(max_length)
         clear_from = length_index + 1
-        while length_ranges[-1] != highest_length:
+        while length_ranges[-1] != max_length:
             length_ranges.pop(clear_from)
         the_length = random.choice(length_ranges)
         return the_length
     else:
         the_length = random.choice(length_ranges)
-        return the_length 
+        return the_length
+
+    
 
 def generate_major_scale(root_midi=60, doubled=False, minor=False):
 

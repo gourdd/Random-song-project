@@ -13,35 +13,35 @@ from random_notes import *
 # Add chords
 # Add rests
 
-def random_score(root_midi, doubled=False, highest_length=4.0, minor=False, measure_count=24, left_hand=False):
+def random_score(root_midi, doubled=False, max_length=4.0, minor=False, measure_count=24, left_hand=False):
 
     the_score = stream.Score()
 
     if left_hand == False:
-        right_part = random_part(root_midi, doubled, highest_length, minor, measure_count)
+        right_part = random_part(root_midi, doubled, max_length, minor, measure_count)
         the_score.insert(0, right_part)
     elif left_hand == True:
-        right_part = random_part(root_midi, doubled, highest_length, minor, measure_count)
-        left_part = random_part(root_midi - 24, doubled, highest_length, minor, measure_count)
+        right_part = random_part(root_midi, doubled, max_length, minor, measure_count)
+        left_part = random_part(root_midi - 24, doubled, max_length, minor, measure_count)
         the_score.insert(0, right_part)
         the_score.insert(0, left_part)
 
     return the_score
 
 
-def random_part(root_midi, doubled=False, highest_length=4.0, minor=False, measure_count=24):
+def random_part(root_midi, doubled=False, max_length=4.0, minor=False, measure_count=24):
 
     counter = 0
     the_part = stream.Part()
     while counter < measure_count:
-        the_measure = random_measure(root_midi, doubled, highest_length, minor)
+        the_measure = random_measure(root_midi, doubled, max_length, minor)
         the_part.append(the_measure)
         counter += 1
 
     return the_part
 
 
-def random_measure(root_midi, doubled=False, highest_length=4.0, minor=False):
+def random_measure(root_midi, doubled=False, max_length=4.0, minor=False):
 
     is_full = False
     the_measure = stream.Measure()
@@ -49,7 +49,7 @@ def random_measure(root_midi, doubled=False, highest_length=4.0, minor=False):
     while not is_full:
         reroll = True
         while reroll:
-            the_note = random_note(root_midi, doubled, highest_length, minor)
+            the_note = random_note(root_midi, doubled, max_length, minor)
             if will_measure_overflow(the_measure, the_note):
                 the_measure.clear()
             else:
@@ -84,5 +84,5 @@ def is_measure_full(the_measure):
     else:
         return False
 
-test_score = random_score(71, doubled=True, highest_length=4.0, minor=True, measure_count=120,left_hand=True)
+test_score = random_score(71, doubled=True, max_length=1.0, minor=True, measure_count=120,left_hand=True)
 test_score.show()
