@@ -49,18 +49,19 @@ def is_measure_full(the_measure):
 
     offset_sum = 0
     for each_note in the_measure:
-        offset_sum += each_note.offset
+        offset_sum += each_note.quarterLength
 
     if offset_sum == 4.0:
         return True
     else:
         return False
 
-measure_test = random_measure(60)
+test_score = stream.Score()
 
-i = 4
+for i in range(20):
+    test_score.append(random_measure(60, doubled=True, highest_length=0.25))
 
-for one_note in measure_test:
+for one_note in test_score[0]:
     print(one_note.duration.type)
 
-measure_test.show('text')
+test_score.show()
