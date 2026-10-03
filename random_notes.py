@@ -21,16 +21,18 @@ def random_pitch(root_midi, doubled=False, minor=False):
 
 def random_length(highest_length):
 
-    length_ranges = [0.25, 0.5, 1.0, 2.0, 4.0]
-    length_index = length_ranges.index(highest_length)
+    length_ranges = [0.25, 0.5, 1.0, 2.0, 4.0] 
 
-    clear_from = length_index + 1
-    while length_ranges[-1] != highest_length:
-        length_ranges.pop(clear_from)
-
-    the_length = random.choice(length_ranges)
-
-    return the_length
+    if highest_length in length_ranges:
+        length_index = length_ranges.index(highest_length)
+        clear_from = length_index + 1
+        while length_ranges[-1] != highest_length:
+            length_ranges.pop(clear_from)
+        the_length = random.choice(length_ranges)
+        return the_length
+    else:
+        the_length = random.choice(length_ranges)
+        return the_length 
 
 def generate_major_scale(root_midi=60, doubled=False, minor=False):
 
@@ -54,16 +56,9 @@ def generate_major_scale(root_midi=60, doubled=False, minor=False):
         the_scale.append(root_midi + 10)
 
     if doubled == True:
-        doubled_scale = generate_major_scale(root_midi + 12, minor=minor)
+        stored_minor = minor
+        doubled_scale = generate_major_scale(root_midi + 12, minor=stored_minor)
         for doubled_note in doubled_scale:
             the_scale.append(doubled_note)
 
     return the_scale
-
-#i = 0
-#stream_test = stream.Stream()
-#while i < 256:
-   # stream_test.append(random_note(root_midi=72, doubled=True, highest_length=0.5, minor=False))
-   # i += 1
-
-#stream_test.show()

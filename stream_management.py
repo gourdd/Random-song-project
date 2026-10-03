@@ -5,10 +5,44 @@ from random_notes import *
 # Create combinations of measures, add the quarter lengths up to see if they equal a clean 4.0
 # If they don't, reroll.
 
+# Features to add:
+# Prompt: Ask user to input root note, doubled, highest length, minor, measure_count, and left hand
+# Add min_length value
+# Prompt differently for left hand
+# Add separate score at the end of current score with different settings
+# Add chords
+# Add rests
+
+def random_score(root_midi, doubled=False, highest_length=4.0, minor=False, measure_count=24, left_hand=False):
+
+    the_score = stream.Score()
+
+    if left_hand == False:
+        right_part = random_part(root_midi, doubled, highest_length, minor, measure_count)
+        the_score.insert(0, right_part)
+    elif left_hand == True:
+        right_part = random_part(root_midi, doubled, highest_length, minor, measure_count)
+        left_part = random_part(root_midi - 24, doubled, highest_length, minor, measure_count)
+        the_score.insert(0, right_part)
+        the_score.insert(0, left_part)
+
+    return the_score
+
+
+def random_part(root_midi, doubled=False, highest_length=4.0, minor=False, measure_count=24):
+
+    counter = 0
+    the_part = stream.Part()
+    while counter < measure_count:
+        the_measure = random_measure(root_midi, doubled, highest_length, minor)
+        the_part.append(the_measure)
+        counter += 1
+
+    return the_part
+
+
 def random_measure(root_midi, doubled=False, highest_length=4.0, minor=False):
 
-    max_offset = 4.0
-    length_check = 0
     is_full = False
     the_measure = stream.Measure()
     
@@ -32,12 +66,6 @@ def will_measure_overflow(the_measure, incoming_note):
         incoming_quarter_length = incoming_note.quarterLength
         most_recent_offset = the_measure[-1].offset
 
-        # measure_space_left = max_offset - most_recent_offset
-        # print("last note offset: " + str(the_measure[-1].offset))
-        # print("incoming ql: "+ str(incoming_quarter_length))
-        # print("space left: " +str(measure_space_left))
-        # print("subtracted: " + str(incoming_quarter_length + measure_space_left))
-
         will_overflow = True if (most_recent_offset + incoming_quarter_length > max_offset) else False
 
         return will_overflow
@@ -56,12 +84,5 @@ def is_measure_full(the_measure):
     else:
         return False
 
-test_score = stream.Score()
-
-for i in range(20):
-    test_score.append(random_measure(60, doubled=True, highest_length=0.25))
-
-for one_note in test_score[0]:
-    print(one_note.duration.type)
-
+test_score = random_score(71, doubled=True, highest_length=4.0, minor=True, measure_count=120,left_hand=True)
 test_score.show()
