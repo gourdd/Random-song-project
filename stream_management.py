@@ -12,6 +12,7 @@ from random_notes import *
 # Add separate score at the end of current score with different settings
 # Add chords
 # Add rests
+# Add better scale options (pentatonic and such)
 
 def random_score(root_midi, doubled=False, max_length=4.0, minor=False, measure_count=24, left_hand=False):
 
@@ -84,5 +85,5 @@ def is_measure_full(the_measure):
     else:
         return False
 
-test_score = random_score(71, doubled=True, max_length=1.0, minor=True, measure_count=120,left_hand=True)
+test_score = random_score(59, doubled=True, max_length=1.0, minor=False, measure_count=48,left_hand=True)
 test_score.show()
