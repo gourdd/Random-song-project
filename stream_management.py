@@ -85,5 +85,13 @@ def is_measure_full(the_measure):
     else:
         return False
 
-test_score = random_score(59, doubled=True, max_length=1.0, minor=False, measure_count=48,left_hand=True)
-test_score.show()
+# test_score = random_score(59, doubled=True, max_length=1.0, minor=False, measure_count=48,left_hand=True)
+# test_score.show()
+
+test_score = random_score(71, doubled=True, max_length=1.0, minor=False, measure_count=48,left_hand=True)
+chordify_check = test_score.chordify()
+
+for one_chord in chordify_check.flatten():
+    one_chord.closedPosition(inPlace=True)
+
+chordify_check.show()
